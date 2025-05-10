@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import tmdb from "../api/tmdb";
 import MovieCard from "../components/MovieCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../styles/pages/Home.css";
-
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -13,7 +12,9 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const fetchTrendingMovies = async (page) => {
-    const response = await tmdb.get(`/trending/movie/day`, { params: { page } });
+    const response = await tmdb.get(`/trending/movie/day`, {
+      params: { page },
+    });
     return response.data.results;
   };
 
@@ -24,7 +25,7 @@ const Home = () => {
     return response.data.results;
   };
 
-  const handleSearch = async (term) => {
+  const handleSearch = useCallback(async (term) => {
     setSearchTerm(term);
     setPage(1);
     setHasMore(true);
@@ -35,11 +36,11 @@ const Home = () => {
       const searched = await fetchSearchResults(term, 1);
       setMovies(searched);
     }
-  };
+  }, []);
 
   useEffect(() => {
     handleSearch("");
-  }, []);
+  }, [handleSearch]);
 
   const fetchMoreMovies = async () => {
     const nextPage = page + 1;
@@ -61,7 +62,7 @@ const Home = () => {
   return (
     <div>
       <Navbar onSearch={handleSearch} />
-      <div >
+      <div>
         <InfiniteScroll
           dataLength={movies.length}
           next={fetchMoreMovies}
@@ -79,5 +80,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
