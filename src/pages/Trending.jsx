@@ -1,71 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import tmdb from "../api/tmdb";
 import MovieCard from "../components/MovieCard";
 import "../styles/pages/Trending.css";
 import Navbar from "../components/Navbar";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const ITEMS_PER_PAGE = 10;
-
 const Trending = () => {
-  const [allMovies, setAllMovies] = useState([]); // full fetched list
-  const [filteredMovies, setFilteredMovies] = useState([]); // filtered full list
-  const [visibleMovies, setVisibleMovies] = useState([]); // currently visible
+  const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(null);
 
-  const fetchTrendingMovies = async () => {
+  const fetchTrendingMovies = async (page) => {
+    const response = await tmdb.get(`/trending/movie/week`, {
+      params: { page },
+    });
+    return response.data.results;
+  };
+
+  const fetchSearchResults = async (term, page) => {
+    const response = await tmdb.get(`/search/movie`, {
+      params: { query: term, page },
+    });
+    return response.data.results;
+  };
+
+  const handleSearch = useCallback(async (term) => {
+    setSearchTerm(term);
+    setPage(1);
+    setHasMore(true);
     try {
-      const response = await tmdb.get(`/trending/movie/week`);
-      const sorted = response.data.results
-        .filter((movie) => movie.release_date)
-        .sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
-      setAllMovies(sorted);
-      setFilteredMovies(sorted);
-      setVisibleMovies(sorted.slice(0, ITEMS_PER_PAGE));
-      setHasMore(sorted.length > ITEMS_PER_PAGE);
+      if (term === "") {
+        const trending = await fetchTrendingMovies(1);
+        setMovies(trending);
+      } else {
+        const searched = await fetchSearchResults(term, 1);
+        setMovies(searched);
+      }
     } catch (err) {
-      setError("Failed to fetch trending movies.");
+      setError("Failed to fetch movies.");
       console.error(err);
     }
-  };
+  }, []);
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-    const filtered =
-      term === ""
-        ? allMovies
-        : allMovies.filter(
-            (movie) =>
-              movie.title.toLowerCase().includes(term.toLowerCase()) ||
-              movie.overview.toLowerCase().includes(term.toLowerCase())
-          );
+  const fetchMoreMovies = async () => {
+    const nextPage = page + 1;
+    let newMovies = [];
+    try {
+      if (searchTerm === "") {
+        newMovies = await fetchTrendingMovies(nextPage);
+      } else {
+        newMovies = await fetchSearchResults(searchTerm, nextPage);
+      }
 
-    setFilteredMovies(filtered);
-    setVisibleMovies(filtered.slice(0, ITEMS_PER_PAGE));
-    setHasMore(filtered.length > ITEMS_PER_PAGE);
-  };
-
-  const fetchMoreMovies = () => {
-    console.log("Fetching more movies for searchTerm:", searchTerm); // optional use
-
-    const currentLength = visibleMovies.length;
-    const nextMovies = filteredMovies.slice(
-      currentLength,
-      currentLength + ITEMS_PER_PAGE
-    );
-
-    setVisibleMovies((prev) => [...prev, ...nextMovies]);
-
-    if (currentLength + ITEMS_PER_PAGE >= filteredMovies.length) {
+      if (newMovies.length === 0) {
+        setHasMore(false);
+      } else {
+        setMovies((prev) => [...prev, ...newMovies]);
+        setPage(nextPage);
+      }
+    } catch (err) {
+      setError("Failed to load more movies.");
       setHasMore(false);
     }
   };
 
   useEffect(() => {
-    fetchTrendingMovies();
-  }, []);
+    handleSearch("");
+  }, [handleSearch]);
 
   return (
     <>
@@ -74,13 +77,13 @@ const Trending = () => {
         <h2>Trending Movies</h2>
         {error && <p className="error">{error}</p>}
         <InfiniteScroll
-          dataLength={visibleMovies.length}
+          dataLength={movies.length}
           next={fetchMoreMovies}
           hasMore={hasMore}
           loader={<h4>Loading more movies...</h4>}
           className="movie-grid"
         >
-          {visibleMovies.map((movie) => (
+          {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </InfiniteScroll>
