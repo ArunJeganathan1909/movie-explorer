@@ -1,31 +1,40 @@
-/* Navbar Container */
-.navbar {
+/* ========== Common Base Styles ========== */
+.navbar-desktop,
+.navbar-mobile {
   background-color: #333;
-  padding: 10px 20px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar__toolbar {
   display: flex;
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
+  align-items: center;
+  padding: 12px 20px;
 }
 
-
-.navbar__left {
-  display: flex;
-  gap: 20px;
-  align-items: baseline;
-  width: 40%;
-}
-
+/* Logo */
 .navbar__logo {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #fff;
-  font-weight: 600;
+  font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar__logo:hover {
   color: #ff6347;
+}
+
+/* ===== Desktop Styles ===== */
+.nav-desktop {
+  display: block;
+}
+
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
 .navbar__link {
@@ -39,34 +48,17 @@
   color: #ff6347;
 }
 
-/* Search Bar */
 .navbar__search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 50%;
+  justify-content: center;
+  width: 40%;
 }
 
-/* Star Icon (Favorites) */
-.navbar__favorites {
-  color: #fff;
-}
-
-.navbar__favorites .navbar__icon {
-  color: #fff;
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
-}
-
-.navbar__favorites .navbar__icon:hover {
-  color: #ff6347;
-}
-
-/* Right Section (Theme and Account) */
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
 }
 
 .navbar__icon {
@@ -84,18 +76,74 @@
   color: #fff;
 }
 
-/* Mobile Responsiveness */
+/* ===== Mobile Styles ===== */
+.nav-mobile {
+  display: none;
+}
+
+.navbar__mobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  width: 100%;
+}
+
+.navbar__search-row {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ========== Drawer ListItem Styles ========== */
+.MuiDrawer-paper {
+  background-color: #222;
+  color: #fff;
+}
+
+.MuiListItem-root {
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.MuiListItem-root:hover {
+  background-color: #444;
+}
+
+.MuiListItemIcon-root {
+  color: #ff6347;
+  min-width: 40px;
+}
+
+.MuiListItemText-primary {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+}
+
 @media (max-width: 768px) {
-  .navbar__left {
-    flex-direction: column;
-    align-items: flex-start;
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-mobile {
+    display: block;
   }
 
   .navbar__search {
-    flex-direction: column;
+    display: none;
   }
 
-  .navbar__right {
-    flex-direction: column;
+  .navbar__search-row {
+    padding: 5px 15px;
+  }
+
+  .navbar__logo {
+    font-size: 1.4rem;
+  }
+
+  .navbar__toolbar {
+    padding: 10px 16px;
   }
 }
