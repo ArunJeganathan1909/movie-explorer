@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import tmdb from "../api/tmdb";
 import MovieCard from "../components/MovieCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import "../styles/pages/Home.css";
+
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -59,12 +61,13 @@ const Home = () => {
   return (
     <div>
       <Navbar onSearch={handleSearch} />
-      <div className="movie-grid">
+      <div >
         <InfiniteScroll
           dataLength={movies.length}
           next={fetchMoreMovies}
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
+          className="movie-grid"
         >
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
