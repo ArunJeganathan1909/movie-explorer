@@ -1,10 +1,11 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   return (
-    <div>
-      <h2>Welcome to Movie Explorer</h2>
-    </div>
+    <>
+      <Navbar />
+    </>
   );
 };
 

@@ -5,14 +5,21 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { MovieProvider } from "./context/MovieContext";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import ThemeProviderWrapper from "./components/ThemeProviderWrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <MovieProvider>
-      <App />
-    </MovieProvider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <MovieProvider>
+        <ThemeProviderWrapper>
+          <App />
+        </ThemeProviderWrapper>
+      </MovieProvider>
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

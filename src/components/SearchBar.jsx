@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { Box, InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar = () => {
   return (
-    <div>SearchBar</div>
-  )
-}
+    <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#555', borderRadius: 1, px: 1 }}>
+      <SearchIcon />
+      <InputBase placeholder="Search…" sx={{ color: 'white', ml: 1 }} />
+    </Box>
+  );
+};
 
-export default SearchBar
+export default SearchBar;
