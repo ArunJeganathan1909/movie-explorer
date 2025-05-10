@@ -20,6 +20,7 @@ import LoginModal from "./LoginModal";
 import SearchBar from "./SearchBar";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
+import { login, logout } from "../redux/user/userSlice";
 import { Link as RouterLink } from "react-router-dom";
 import "../styles/components/Navbar.css";
 
@@ -68,7 +69,12 @@ const Navbar = ({ onSearch }) => {
               </IconButton>
 
               {user ? (
-                <Typography className="navbar__username">
+                <Typography
+                  className="navbar__username"
+                  onClick={() => dispatch(logout())}
+                  sx={{ cursor: "pointer" }}
+                  title="Click to logout"
+                >
                   {user.username}
                 </Typography>
               ) : (
@@ -169,7 +175,11 @@ const Navbar = ({ onSearch }) => {
             <ListItem
               button
               onClick={() => {
-                if (!user) setOpenLogin(true);
+                if (user) {
+                  dispatch(logout());
+                } else {
+                  setOpenLogin(true);
+                }
               }}
               sx={{
                 color: theme === "light" ? "black" : "white",
@@ -184,7 +194,7 @@ const Navbar = ({ onSearch }) => {
                 />
               </ListItemIcon>
               <ListItemText
-                primary={user ? user.username : "Login"}
+                primary={user ? `${user.username} (Logout)` : "Login"}
                 sx={{ color: theme === "light" ? "black" : "white" }}
               />
             </ListItem>

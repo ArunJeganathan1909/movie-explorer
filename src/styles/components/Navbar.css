@@ -125,6 +125,16 @@
   font-weight: 500;
 }
 
+.navbar__username {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navbar__username:hover {
+  color: #f50057; /* Adjust to your theme */
+}
+
+
 @media (max-width: 768px) {
   .nav-desktop {
     display: none;
