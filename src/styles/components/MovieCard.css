@@ -8,6 +8,24 @@
   transition: transform 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   flex: 1 1 calc(25% - 20px); /* fallback for flex layouts */
+  position: relative;
+}
+
+.movie-card__star {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  padding: 0px 3px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.movie-card__star:hover {
+  transform: scale(1.2);
 }
 
 .movie-card:hover {
