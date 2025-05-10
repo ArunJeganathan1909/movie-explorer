@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Box, IconButton } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import LoginModal from './LoginModal';
-import SearchBar from './SearchBar';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleTheme } from '../redux/theme/themeSlice';
+import React, { useState } from "react";
+import { AppBar, Toolbar, Typography, Box, IconButton } from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import LoginModal from "./LoginModal";
+import SearchBar from "./SearchBar";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -14,13 +15,24 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ bgcolor: '#333' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6">Movie Explorer</Typography>
+      <AppBar position="static" sx={{ bgcolor: "#333" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* Logo and Trending Links */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <Typography variant="h6">Movie Explorer</Typography>
+            </Link>
+            <Link
+              to="/trending"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography variant="subtitle1">Trending</Typography>
+            </Link>
+          </Box>
 
           <SearchBar />
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <IconButton color="inherit" onClick={() => dispatch(toggleTheme())}>
               <Brightness4Icon />
             </IconButton>
