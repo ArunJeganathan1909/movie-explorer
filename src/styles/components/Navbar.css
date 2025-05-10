@@ -8,11 +8,11 @@
   width: 100%;
 }
 
-/* Logo and Links */
+
 .navbar__left {
   display: flex;
   gap: 20px;
-  align-items: center;
+  align-items: baseline;
   width: 40%;
 }
 
