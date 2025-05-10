@@ -20,7 +20,7 @@ import LoginModal from "./LoginModal";
 import SearchBar from "./SearchBar";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
-import { login, logout } from "../redux/user/userSlice";
+import { logout } from "../redux/user/userSlice";
 import { Link as RouterLink } from "react-router-dom";
 import "../styles/components/Navbar.css";
 
