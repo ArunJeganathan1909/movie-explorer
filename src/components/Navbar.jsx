@@ -13,14 +13,14 @@ import {
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import StarIcon from "@mui/icons-material/Star"; // Import the star icon
+import StarIcon from "@mui/icons-material/Star";
 import MenuIcon from "@mui/icons-material/Menu";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import LoginModal from "./LoginModal";
 import SearchBar from "./SearchBar";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import "../styles/components/Navbar.css";
 
 const Navbar = ({ onSearch }) => {
@@ -36,31 +36,29 @@ const Navbar = ({ onSearch }) => {
 
   return (
     <>
+      {/* Desktop Navbar */}
       <div className="nav-desktop">
         <AppBar position="static" className="navbar-desktop">
           <Toolbar>
-            {/* Logo and Links */}
             <Box className="navbar__left">
-              <Link to="/" className="navbar__logo">
+              <RouterLink to="/" className="navbar__logo">
                 <Typography variant="h6">Movie Explorer</Typography>
-              </Link>
-              <Link to="/trending" className="navbar__link">
+              </RouterLink>
+              <RouterLink to="/trending" className="navbar__link">
                 <Typography variant="subtitle1">Trending</Typography>
-              </Link>
+              </RouterLink>
             </Box>
 
-            {/* Search Bar */}
             <Box className="navbar__search">
               <SearchBar onSearch={onSearch} />
             </Box>
 
-            {/* Star Icon (Favorites) and Theme Toggle */}
             <Box className="navbar__right">
-              <Link to="/favorites" className="navbar__favorites">
+              <RouterLink to="/favorites" className="navbar__favorites">
                 <IconButton className="navbar__icon">
                   <StarIcon />
                 </IconButton>
-              </Link>
+              </RouterLink>
 
               <IconButton
                 className="navbar__icon"
@@ -69,7 +67,6 @@ const Navbar = ({ onSearch }) => {
                 <Brightness4Icon />
               </IconButton>
 
-              {/* Account Icon or Username */}
               {user ? (
                 <Typography className="navbar__username">
                   {user.username}
@@ -87,17 +84,17 @@ const Navbar = ({ onSearch }) => {
         </AppBar>
       </div>
 
+      {/* Mobile Navbar */}
       <div className="nav-mobile">
         <AppBar position="static" className="navbar-mobile">
           <Toolbar className="navbar__toolbar">
-            {/* Mobile Menu Icon + Logo */}
             <Box className="navbar__mobile">
               <IconButton className="navbar__icon" onClick={toggleDrawer}>
                 <MenuIcon />
               </IconButton>
-              <Link to="/" className="navbar__logo">
+              <RouterLink to="/" className="navbar__logo">
                 <Typography variant="h6">Movie Explorer</Typography>
-              </Link>
+              </RouterLink>
             </Box>
           </Toolbar>
           <Box className="navbar__search-row">
@@ -106,30 +103,66 @@ const Navbar = ({ onSearch }) => {
         </AppBar>
       </div>
 
-      {/* Slide-out Drawer Menu (Mobile Only) */}
+      {/* Drawer Menu for Mobile */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
           <List>
-            <ListItem button component={Link} to="/trending">
+            <ListItem
+              button
+              component={RouterLink}
+              to="/trending"
+              sx={{
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
               <ListItemIcon>
-                <WhatshotIcon />
+                <WhatshotIcon
+                  sx={{ color: theme === "light" ? "black" : "white" }}
+                />
               </ListItemIcon>
-              <ListItemText primary="Trending" />
+              <ListItemText
+                primary="Trending"
+                sx={{ color: theme === "light" ? "black" : "white" }}
+              />
             </ListItem>
 
-            <ListItem button component={Link} to="/favorites">
+            <ListItem
+              button
+              component={RouterLink}
+              to="/favorites"
+              sx={{
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
               <ListItemIcon>
-                <StarIcon />
+                <StarIcon
+                  sx={{ color: theme === "light" ? "black" : "white" }}
+                />
               </ListItemIcon>
-              <ListItemText primary="Favorites" />
+              <ListItemText
+                primary="Favorites"
+                sx={{ color: theme === "light" ? "black" : "white" }}
+              />
             </ListItem>
 
-            <ListItem button onClick={() => dispatch(toggleTheme())}>
+            <ListItem
+              button
+              onClick={() => dispatch(toggleTheme())}
+              sx={{
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
               <ListItemIcon>
-                <Brightness4Icon />
+                <Brightness4Icon
+                  sx={{ color: theme === "light" ? "black" : "white" }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary={`Theme: ${theme === "light" ? "Light" : "Dark"}`}
+                sx={{
+                  color: theme === "light" ? "black" : "white",
+                  cursor: "pointer",
+                }}
               />
             </ListItem>
 
@@ -138,11 +171,22 @@ const Navbar = ({ onSearch }) => {
               onClick={() => {
                 if (!user) setOpenLogin(true);
               }}
+              sx={{
+                color: theme === "light" ? "black" : "white",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
             >
               <ListItemIcon>
-                <AccountCircle />
+                <AccountCircle
+                  sx={{ color: theme === "light" ? "black" : "white" }}
+                />
               </ListItemIcon>
-              <ListItemText primary={user ? user.username : "Login"} />
+              <ListItemText
+                primary={user ? user.username : "Login"}
+                sx={{ color: theme === "light" ? "black" : "white" }}
+              />
             </ListItem>
           </List>
         </Box>

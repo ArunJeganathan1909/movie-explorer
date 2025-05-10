@@ -119,7 +119,6 @@
 .MuiListItemText-primary {
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
 }
 
 @media (max-width: 768px) {
