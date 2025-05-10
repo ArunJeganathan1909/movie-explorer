@@ -1,0 +1,29 @@
+.movie-card {
+  width: 150px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.movie-card__link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.movie-card__poster {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.movie-card__info {
+  text-align: center;
+}
+
+.movie-card__info h3 {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.movie-card__info p {
+  font-size: 0.875rem;
+  margin: 5px 0;
+}

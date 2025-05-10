@@ -1,0 +1,31 @@
+.movie-details {
+  display: flex;
+  gap: 20px;
+}
+
+.movie-details__poster {
+  width: 300px;
+  border-radius: 8px;
+}
+
+.movie-details__info {
+  max-width: 600px;
+}
+
+.movie-details__info h1 {
+  font-size: 2rem;
+}
+
+.movie-details__info p {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.movie-details__info ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.movie-details__info ul li {
+  font-size: 1rem;
+}

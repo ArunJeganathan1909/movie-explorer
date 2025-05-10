@@ -1,0 +1,101 @@
+/* Navbar Container */
+.navbar {
+  background-color: #333;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+/* Logo and Links */
+.navbar__left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  width: 40%;
+}
+
+.navbar__logo {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar__logo:hover {
+  color: #ff6347;
+}
+
+.navbar__link {
+  font-size: 1.1rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar__link:hover {
+  color: #ff6347;
+}
+
+/* Search Bar */
+.navbar__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 50%;
+}
+
+/* Star Icon (Favorites) */
+.navbar__favorites {
+  color: #fff;
+}
+
+.navbar__favorites .navbar__icon {
+  color: #fff;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.navbar__favorites .navbar__icon:hover {
+  color: #ff6347;
+}
+
+/* Right Section (Theme and Account) */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar__icon {
+  color: #fff;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.navbar__icon:hover {
+  color: #ff6347;
+}
+
+.navbar__username {
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar__left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar__search {
+    flex-direction: column;
+  }
+
+  .navbar__right {
+    flex-direction: column;
+  }
+}
