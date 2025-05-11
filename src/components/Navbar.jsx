@@ -10,6 +10,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -21,18 +25,29 @@ import SearchBar from "./SearchBar";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { logout } from "../redux/user/userSlice";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/components/Navbar.css";
 
 const Navbar = ({ onSearch }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleDrawer = () => {
     setDrawerOpen((prev) => !prev);
+  };
+
+  const handleFavoritesClick = () => {
+    if (user) {
+      navigate("/favorites");
+    } else {
+      setLoginPromptOpen(true);
+    }
   };
 
   return (
@@ -45,7 +60,12 @@ const Navbar = ({ onSearch }) => {
               <RouterLink to="/" className="navbar__logo">
                 <Typography variant="h6">Movie Explorer</Typography>
               </RouterLink>
-              <RouterLink to="/trending" className="navbar__link">
+              <RouterLink
+                to="/trending"
+                className={`navbar__link ${
+                  location.pathname === "/trending" ? "active-link" : ""
+                }`}
+              >
                 <Typography variant="subtitle1">Trending</Typography>
               </RouterLink>
             </Box>
@@ -55,24 +75,34 @@ const Navbar = ({ onSearch }) => {
             </Box>
 
             <Box className="navbar__right">
-              <RouterLink to="/favorites" className="navbar__favorites">
-                <IconButton className="navbar__icon">
-                  <StarIcon />
-                </IconButton>
-              </RouterLink>
+              <IconButton
+                className={`navbar__icon ${
+                  location.pathname === "/favorites" ? "active-link" : ""
+                }`}
+                onClick={handleFavoritesClick}
+              >
+                <StarIcon />
+              </IconButton>
 
               <IconButton
                 className="navbar__icon"
                 onClick={() => dispatch(toggleTheme())}
               >
-                <Brightness4Icon />
+                <Brightness4Icon
+                  style={{ color: theme === "dark" ? "#ff6347" : "inherit" }}
+                />
               </IconButton>
 
               {user ? (
                 <Typography
                   className="navbar__username"
                   onClick={() => dispatch(logout())}
-                  sx={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems:"center"}}
+                  sx={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
                   title="Click to logout"
                 >
                   <span>{user.username} </span>
@@ -129,14 +159,15 @@ const Navbar = ({ onSearch }) => {
               </ListItemIcon>
               <ListItemText
                 primary="Trending"
-                sx={{ color: theme === "light" ? "black" : "white" }}
+                className={
+                  location.pathname === "/trending" ? "active-link" : ""
+                }
               />
             </ListItem>
 
             <ListItem
               button
-              component={RouterLink}
-              to="/favorites"
+              onClick={handleFavoritesClick}
               sx={{
                 color: theme === "light" ? "black" : "white",
               }}
@@ -148,7 +179,9 @@ const Navbar = ({ onSearch }) => {
               </ListItemIcon>
               <ListItemText
                 primary="Favorites"
-                sx={{ color: theme === "light" ? "black" : "white" }}
+                className={
+                  location.pathname === "/favorites" ? "active-link" : ""
+                }
               />
             </ListItem>
 
@@ -161,9 +194,17 @@ const Navbar = ({ onSearch }) => {
             >
               <ListItemIcon>
                 <Brightness4Icon
-                  sx={{ color: theme === "light" ? "black" : "white" }}
+                  sx={{
+                    color:
+                      theme === "dark"
+                        ? "#ff6347"
+                        : theme === "light"
+                        ? "black"
+                        : "inherit",
+                  }}
                 />
               </ListItemIcon>
+
               <ListItemText
                 primary={`Theme: ${theme === "light" ? "Light" : "Dark"}`}
                 sx={{
@@ -202,6 +243,29 @@ const Navbar = ({ onSearch }) => {
           </List>
         </Box>
       </Drawer>
+
+      {/* Login Prompt Dialog */}
+      <Dialog
+        open={loginPromptOpen}
+        onClose={() => setLoginPromptOpen(false)}
+        className="login-prompt-dialog"
+      >
+        <DialogTitle>You need to log in to access Favorites</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setLoginPromptOpen(false)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              setLoginPromptOpen(false);
+              setOpenLogin(true);
+            }}
+            color="primary"
+            variant="contained"
+            autoFocus
+          >
+            Login
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <LoginModal open={openLogin} onClose={() => setOpenLogin(false)} />
     </>

@@ -52,6 +52,10 @@
   color: #ff6347;
 }
 
+.active-link {
+  color: #ff6347 !important;
+}
+
 .navbar__search {
   display: flex;
   align-items: center;
@@ -134,6 +138,40 @@
   color: #f50057; /* Adjust to your theme */
 }
 
+/* Login Prompt Dialog */
+.login-prompt-dialog .MuiDialog-paper {
+  background-color: #222;
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.login-prompt-dialog .MuiDialogTitle-root {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff6347;
+}
+
+.login-prompt-dialog .MuiDialogActions-root {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px;
+}
+
+.login-prompt-dialog .MuiButton-root {
+  font-weight: 500;
+  text-transform: none;
+}
+
+.login-prompt-dialog .MuiButton-root.MuiButton-containedPrimary {
+  background-color: #ff6347;
+}
+
+.login-prompt-dialog .MuiButton-root.MuiButton-containedPrimary:hover {
+  background-color: #e5533f;
+}
 
 @media (max-width: 768px) {
   .nav-desktop {
