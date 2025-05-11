@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { StarBorder, Star } from "@mui/icons-material";
+import { addFavorite, removeFavorite } from "../redux/user/userSlice";
 import tmdb from "../api/tmdb";
+import Navbar from "./Navbar";
 import "../styles/components/MovieDetails.css";
 
 const MovieDetails = () => {
@@ -9,10 +13,23 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate(); // Add the useNavigate hook
+
+  // Function to handle search and redirect
+  const handleSearch = (searchTerm) => {
+    if (searchTerm) {
+      navigate("/"); // Redirect to home page on search
+    }
+  };
+
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await tmdb.get(`/movie/${id}`);
+        const response = await tmdb.get(
+          `/movie/${id}?append_to_response=videos`
+        );
         setMovie(response.data);
         setLoading(false);
       } catch (error) {
@@ -27,45 +44,66 @@ const MovieDetails = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-  // Check if videos data exists and then get the trailer key
-  const trailerKey = movie?.videos?.results?.[0]?.key || null;
+  const isFavorite = user?.favorites?.some((fav) => fav.id === movie?.id);
+
+  const toggleFavorite = () => {
+    if (!user) return alert("Please login to favorite movies");
+
+    if (isFavorite) {
+      dispatch(removeFavorite(movie));
+    } else {
+      dispatch(addFavorite(movie));
+    }
+  };
+
+  const trailerKey =
+    movie?.videos?.results?.find((v) => v.type === "Trailer")?.key || null;
 
   return (
-    <div className="movie-details">
-      <img
-        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-        alt={movie.title}
-        className="movie-details__poster"
-      />
-      <div className="movie-details__info">
-        <h1>{movie.title}</h1>
-        <p>{movie.release_date}</p>
-        <p>Rating: {movie.vote_average}</p>
-        <p>{movie.overview}</p>
-        <h3>Genres</h3>
-        <ul>
-          {movie.genres.map((genre) => (
-            <li key={genre.id}>{genre.name}</li>
-          ))}
-        </ul>
-        <h3>Cast</h3>
-        {/* You can fetch the cast separately using the `credits` endpoint */}
-        <p>Cast information will be displayed here</p>
+    <>
+      <Navbar onSearch={handleSearch} />
+      <div className="movie-details">
+        <div className="movie-details__image-wrapper">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            className="movie-details__poster"
+          />
+          <div className="movie-details__star" onClick={toggleFavorite}>
+            {isFavorite ? <Star /> : <StarBorder />}
+          </div>
+        </div>
 
-        {/* Only show trailer link if a trailer key exists */}
-        {trailerKey ? (
-          <a
-            href={`https://www.youtube.com/watch?v=${trailerKey}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Watch Trailer
-          </a>
-        ) : (
-          <p>No trailer available</p>
-        )}
+        <div className="movie-details__info">
+          <h1>{movie.title}</h1>
+          <p>{movie.release_date}</p>
+          <p>Rating: {movie.vote_average}</p>
+          <p>{movie.overview}</p>
+
+          <h3>Genres</h3>
+          <ul>
+            {movie.genres.map((genre) => (
+              <li key={genre.id}>{genre.name}</li>
+            ))}
+          </ul>
+
+          <h3>Cast</h3>
+          <p>Cast information will be displayed here</p>
+
+          {trailerKey ? (
+            <a
+              href={`https://www.youtube.com/watch?v=${trailerKey}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Watch Trailer
+            </a>
+          ) : (
+            <p>No trailer available</p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
