@@ -1,0 +1,41 @@
+.login-modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.login-modal-textfield {
+  width: 100%;
+}
+
+.login-modal-error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: -8px;
+  margin-bottom: 4px;
+}
+
+.login-modal-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-modal-button:hover {
+  background-color: #1565c0;
+}
+
+.login-modal-toggle {
+  cursor: pointer;
+  text-align: center;
+  color: #1976d2;
+  transition: color 0.3s ease;
+}
+
+.login-modal-toggle:hover {
+  color: #1565c0;
+  text-decoration: underline;
+}

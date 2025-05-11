@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { StarBorder, Star } from "@mui/icons-material"; // Import icons
+import { StarBorder, Star } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../redux/user/userSlice";
 import "../styles/components/MovieCard.css";
 
 const MovieCard = ({ movie }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
+  const isFavorite = user?.favorites?.some((fav) => fav.id === movie.id);
 
   const toggleFavorite = (e) => {
-    e.preventDefault(); // Prevent navigating when clicking the star
-    setIsFavorite((prev) => !prev);
+    e.preventDefault();
+    if (!user) return alert("Please login to favorite movies");
+
+    if (isFavorite) {
+      dispatch(removeFavorite(movie));
+    } else {
+      dispatch(addFavorite(movie));
+    }
   };
 
   return (
     <div className="movie-card">
-      {/* Star Icon */}
       <div className="movie-card__star" onClick={toggleFavorite}>
         {isFavorite ? <Star /> : <StarBorder />}
       </div>

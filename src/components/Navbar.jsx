@@ -72,10 +72,11 @@ const Navbar = ({ onSearch }) => {
                 <Typography
                   className="navbar__username"
                   onClick={() => dispatch(logout())}
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems:"center"}}
                   title="Click to logout"
                 >
-                  {user.username}
+                  <span>{user.username} </span>
+                  <span>( logout )</span>
                 </Typography>
               ) : (
                 <IconButton

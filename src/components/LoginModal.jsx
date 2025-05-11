@@ -1,4 +1,3 @@
-// src/components/LoginModal.jsx
 import React, { useState } from "react";
 import {
   Dialog,
@@ -12,6 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { login } from "../redux/user/userSlice";
 import sampleUsers from "../data/sampleUsers";
+import "../styles/components/LoginModal.css";
 
 const LoginModal = ({ open, onClose }) => {
   const dispatch = useDispatch();
@@ -38,35 +38,29 @@ const LoginModal = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{isSignup ? "Sign Up" : "Login"}</DialogTitle>
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+        <Box className="login-modal-container">
           <TextField
+            className="login-modal-textfield"
             label="Username"
             value={form.username}
-            onChange={(e) =>
-              setForm({ ...form, username: e.target.value })
-            }
-            fullWidth
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
           />
           <TextField
+            className="login-modal-textfield"
             label="Password"
             type="password"
             value={form.password}
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
-            fullWidth
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
           {error && (
-            <Typography color="error" variant="body2">
-              {error}
-            </Typography>
+            <Typography className="login-modal-error">{error}</Typography>
           )}
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button className="login-modal-button" onClick={handleSubmit}>
             {isSignup ? "Sign Up" : "Login"}
           </Button>
           <Typography
+            className="login-modal-toggle"
             variant="body2"
-            sx={{ cursor: "pointer", textAlign: "center" }}
             onClick={() => setIsSignup(!isSignup)}
           >
             {isSignup
